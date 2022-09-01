@@ -16,8 +16,8 @@ pipeline {
      steps{  
          script {
                 sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 581962848636.dkr.ecr.us-east-1.amazonaws.com'
-                sh 'docker tag aatmaaniproject:latest 581962848636.dkr.ecr.us-east-1.amazonaws.com/aatmaaniproject::$BUILD_NUMBER'
-                sh 'docker push 581962848636.dkr.ecr.us-east-1.amazonaws.com/aatmaaniproject::$BUILD_NUMBER'
+                sh 'docker tag aatmaaniproject:latest 581962848636.dkr.ecr.us-east-1.amazonaws.com/aatmaaniproject:$BUILD_NUMBER'
+                sh 'docker push 581962848636.dkr.ecr.us-east-1.amazonaws.com/aatmaaniproject:$BUILD_NUMBER'
          }
         }
       }
@@ -29,7 +29,7 @@ pipeline {
      stage('deploy to helm ') {
       steps {
             sh 'kubectl apply -f my-namespace.yaml'
-            sh 'sed -i -s s/latest/:$BUILD_NUMBER/g nodejsapp/values.yaml'
+            sh 'sed -i -s s/latest/$BUILD_NUMBER/g nodejsapp/values.yaml'
             sh 'helm upgrade --install nodejsdev nodejsapp --values nodejsapp/values.yaml -n dev'
       }
     }
