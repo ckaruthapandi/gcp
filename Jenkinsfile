@@ -9,6 +9,7 @@ pipeline {
     stage('Docker image build ') {
       steps {
         sh 'docker build -t aatmaaniproject .'
+        sh 'docker images tag $IMAGE Myapp:$COMMIT'
       }
     }
     stage('Pushing to ECR') {
