@@ -36,7 +36,7 @@ pipeline {
   {
       always
       {
-          slackSend channel: 'nodejsapp', message: "pipeline status -${currentBuild.currentResult}"
+          slackSend channel: 'kp-devops', message: "pipeline status -${currentBuild.currentResult}"
       }
   }
 }
