@@ -42,6 +42,7 @@ pipeline {
   {
       always
       {
+        cleanWs()
           slackSend channel: 'kp-devops', message: "pipeline status -${currentBuild.currentResult}"
         }
    }
