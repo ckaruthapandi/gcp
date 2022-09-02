@@ -3,7 +3,9 @@ pipeline {
   stages {
     stage('node js check out ') {
       steps {
-        git branch: 'main', url: 'https://github.com/ckaruthapandi/ap_Node_js_app.git'
+        git init
+        git remote add https://github.com/ckaruthapandi/ap_Node_js_app.git
+        git pull https://github.com/ckaruthapandi/ap_Node_js_app.git
       }
     }
     stage('Docker image build ') {
