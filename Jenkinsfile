@@ -3,7 +3,6 @@ pipeline {
   stages {
     stage('node js check out ') {
       steps {
-        sh 'rm -rf "${WORKSPACE}"/.[a-z]*'
         git branch: 'main', url: 'https://github.com/ckaruthapandi/ap_Node_js_app.git'
       }
     }
