@@ -1,5 +1,6 @@
 pipeline {
   agent any
+  cleanWs()
   stages {
     stage('node js check out ') {
       steps {
@@ -42,12 +43,6 @@ pipeline {
       always
       {
           slackSend channel: 'kp-devops', message: "pipeline status -${currentBuild.currentResult}"
-            cleanWs(cleanWhenNotBuilt: false,
-                    deleteDirs: true,
-                    disableDeferredWipeout: true,
-                    notFailBuild: true,
-                    patterns: [[pattern: '.gitignore', type: 'INCLUDE'],
-                               [pattern: '.propsfile', type: 'EXCLUDE']])
         }
    }
 }
