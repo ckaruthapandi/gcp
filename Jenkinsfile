@@ -42,11 +42,6 @@ pipeline {
       always
       {
           slackSend channel: 'kp-devops', message: "pipeline status -${currentBuild.currentResult}"
-      }
-  }
-   post {
-        // Clean after build
-        always {
             cleanWs(cleanWhenNotBuilt: false,
                     deleteDirs: true,
                     disableDeferredWipeout: true,
