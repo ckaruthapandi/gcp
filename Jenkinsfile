@@ -5,13 +5,12 @@ pipeline {
       steps {
         sh 'git init'
         sh 'git remote add https://github.com/ckaruthapandi/ap_Node_js_app.git'
-        sh 'git pull'
+        sh 'git pull https://github.com/ckaruthapandi/ap_Node_js_app.git'
       }
     }
     stage('Docker image build ') {
       steps {
         sh 'docker build -t aatmaaniproject .'
-        
       }
     }
     stage('Pushing to ECR') {
