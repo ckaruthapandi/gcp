@@ -1,6 +1,5 @@
 pipeline {
   agent any
-  cleanWs()
   stages {
     stage('node js check out ') {
       steps {
