@@ -3,6 +3,7 @@ pipeline {
   stages {
     stage('node js check out ') {
       steps {
+        git pull upstream  main 
         git branch: 'main', credentialsId: '9f3b5fc3-a908-4819-b3e6-0ba71e7c6bcf', url: 'https://github.com/ckaruthapandi/ap_Node_js_app.git'
       }
     }
