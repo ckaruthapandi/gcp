@@ -28,7 +28,7 @@ pipeline {
      stage('deploy to helm ') {
       steps {
             sh 'kubectl apply -f my-namespace.yaml'
-            sh 'helm upgrade --set image.tag=$BUILD_NUMBER nodejsapp'
+            sh 'helm upgrade nodejsdev nodejsapp --set image.tag=$BUILD_NUMBER'
             sh 'helm upgrade --install nodejsdev nodejsapp --values nodejsapp/values.yaml -n dev'
       }
     }
