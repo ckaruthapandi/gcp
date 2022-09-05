@@ -1,0 +1,25 @@
+pipeline {
+  agent any
+    stage('helm repo check out ') {
+      steps {
+        git branch: 'main', url: 'https://github.com/ckaruthapandi/ap_helm_node_js_dev.git'
+      }
+    }
+     stage('deploy to helm ') {
+      steps {
+            sh 'kubectl apply -f my-namespace.yaml'
+            sh 'sed -i s/latest/$BUILD_NUMBER/g nodejsapp/values.yaml'
+            sh 'cat nodejsapp/values.yaml'
+            sh 'helm upgrade --install nodejsdev nodejsapp --values nodejsapp/values.yaml -n dev'
+      }
+    }
+  }
+  post 
+  {
+      always
+      {
+        
+          slackSend channel: 'kp-devops', message: "pipeline status -${currentBuild.currentResult}"
+        }
+   }
+}
