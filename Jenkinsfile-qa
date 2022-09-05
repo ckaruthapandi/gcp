@@ -1,5 +1,6 @@
 pipeline {
   agent any
+   stages {
   stage('helm repo check out ') {
       steps {
         git branch: 'main', url: 'https://github.com/ckaruthapandi/ap_helm_node_js.git'
@@ -13,7 +14,7 @@ pipeline {
             sh 'helm upgrade --install nodejsqa nodejsapp-qa --values nodejsapp/values.yaml -n qa'
       }
     }
-  }
+    }
   post 
   {
       always
