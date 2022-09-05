@@ -11,7 +11,7 @@ pipeline {
             sh 'kubectl apply -f my-namespace.yaml'
             sh 'sed -i s/latest/$BUILD_NUMBER/g nodejsapp/values.yaml'
             sh 'cat nodejsapp/values.yaml'
-            sh 'helm upgrade --install nodejsqa nodejsapp-qa --values nodejsapp/values.yaml -n qa'
+            sh 'helm upgrade --install nodejsqa nodejsapp-qa --values nodejsapp/values.yaml -n prod'
       }
     }
     }
