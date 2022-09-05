@@ -29,8 +29,7 @@ pipeline {
       steps {
             sh 'kubectl apply -f my-namespace.yaml'
             sh 'helm upgrade --install nodejsdev nodejsapp --set image.tag=$BUILD_NUMBER --values nodejsapp/values.yaml -n dev'
-            sh 'helm upgrade --install nodejsdev nodejsapp --values nodejsapp/values.yaml -n dev'
-      }
+           }
     }
   }
   post 
