@@ -5,6 +5,8 @@ pipeline {
       steps {
         git branch: 'main', url: 'https://github.com/ckaruthapandi/ap_Node_js_app.git'
         echo GIT_COMMIT %GIT_COMMIT% 
+          echo "env.GIT_COMMIT"
+      echo "${env.GIT_COMMIT}"
            }
     }
     stage('Docker image build ') {
