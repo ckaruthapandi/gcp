@@ -4,6 +4,7 @@ pipeline {
     stage('node js check out ') {
       steps {
         git branch: 'main', url: 'https://github.com/ckaruthapandi/ap_Node_js_app.git'
+        echo GIT_COMMIT %GIT_COMMIT% 
            }
     }
     stage('Docker image build ') {
