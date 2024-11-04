@@ -21,11 +21,25 @@ pipeline {
     stage('Pushing to GCR') {
      steps{  
          script {
-                sh 'gcloud auth configure-docker us-central1-docker.pkg.dev'
+                def gcloudServiceAccountKey = credentials('ecbae9ea-2041-4956-a579-74d26beb92c2') // Replace with your credential ID
+                    writeFile file: 'gcloud-key.json', text: gcloudServiceAccountKey
+                    sh 'gcloud auth activate-service-account --key-file=gcloud-key.json'
+                    sh 'gcloud auth configure-docker'
+
                 sh 'docker push gcr.io/red-context-436605-p8/nodejs:latest'
                 }
            }
       }
+     stage('Build and Push') {
+            steps {
+                sh 'docker push gcr.io/red-context-436605-p8/nodejs:latest'
+            }
+        }
+     post {
+        always {
+            sh 'rm -f gcloud-key.json' // Clean up the key file
+        }
+    }
     stage('helm repo check out ') {
       steps {
         git branch: 'main', url: 'https://github.com/ckaruthapandi/ap_helm_node_js.git'
