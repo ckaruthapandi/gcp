@@ -13,11 +13,6 @@ pipeline {
         }
     }
 }
-    stage('Docker image build ') {
-      steps {
-        sh 'docker build -t gcr.io/red-context-436605-p8/nodejs:latest .'
-      }
-    }
     stage('connecting to GCR') {
      steps{  
          script {
@@ -30,6 +25,7 @@ pipeline {
       }
      stage('Push to GCR') {
             steps {
+                sh 'docker build -t gcr.io/red-context-436605-p8/nodejs:${env.BUILD_NUMBER} .'
                 sh 'docker push gcr.io/red-context-436605-p8/nodejs:latest'
             }
         }
