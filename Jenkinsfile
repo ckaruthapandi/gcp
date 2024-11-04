@@ -35,11 +35,6 @@ pipeline {
                 sh 'docker push gcr.io/red-context-436605-p8/nodejs:latest'
             }
         }
-     post {
-        always {
-            sh 'rm -f gcloud-key.json' // Clean up the key file
-        }
-    }
     stage('helm repo check out ') {
       steps {
         git branch: 'main', url: 'https://github.com/ckaruthapandi/ap_helm_node_js.git'
@@ -57,6 +52,7 @@ pipeline {
   {
       always
       {
+          sh 'rm -f gcloud-key.json' // Clean up the key file
           slackSend channel: 'kp-devops', message: "pipeline status -${currentBuild.currentResult}"
         }
    }
