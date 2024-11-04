@@ -15,7 +15,7 @@ pipeline {
 }
     stage('Docker image build ') {
       steps {
-        sh 'sudo docker build -t aatmaaniproject .'
+        sh 'docker build -t aatmaaniproject .'
       }
     }
     stage('Pushing to ECR') {
