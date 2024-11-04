@@ -18,19 +18,17 @@ pipeline {
         sh 'docker build -t gcr.io/red-context-436605-p8/nodejs:latest .'
       }
     }
-    stage('Pushing to GCR') {
+    stage('connecting to GCR') {
      steps{  
          script {
                 def gcloudServiceAccountKey = credentials('ecbae9ea-2041-4956-a579-74d26beb92c2') // Replace with your credential ID
                     writeFile file: 'gcloud-key.json', text: gcloudServiceAccountKey
                     sh 'gcloud auth activate-service-account --key-file=gcloud-key.json'
                     sh 'gcloud auth configure-docker'
-
-                sh 'docker push gcr.io/red-context-436605-p8/nodejs:latest'
                 }
            }
       }
-     stage('Build and Push') {
+     stage('Push to GCR') {
             steps {
                 sh 'docker push gcr.io/red-context-436605-p8/nodejs:latest'
             }
