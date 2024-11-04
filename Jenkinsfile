@@ -1,7 +1,8 @@
 pipeline {
     agent any
-environment {
-        GOOGLE_APPLICATION_CREDENTIALS = 'red-context-436605-p8-bfde6b0a21c8.json' // Path to your service account key
+
+    environment {
+        GOOGLE_APPLICATION_CREDENTIALS = 'gcloud-key.json' // Change this to match the cleanup step
     }
 
     stages {
@@ -31,12 +32,12 @@ environment {
                 }
             }
         }
-        
-    stage('Authenticate with Google Cloud') {
+
+        stage('Authenticate with Google Cloud') {
             steps {
                 script {
                     // Load Google Cloud credentials from Jenkins credentials store
-                    def gcloudServiceAccountKey = credentials('d182c445-296a-4a3c-a6b8-c9f5ccf7ee3f') // Replace with your Jenkins credential ID
+                    def gcloudServiceAccountKey = credentials('d182c445-296a-4a3c-a6b8-c9f5ccf7ee3f') // Your Jenkins credential ID
                     writeFile file: GOOGLE_APPLICATION_CREDENTIALS, text: gcloudServiceAccountKey
 
                     // Authenticate with Google Cloud
@@ -46,10 +47,14 @@ environment {
                 }
             }
         }
+    }
+
     post {
         always {
-            sh 'rm -f gcloud-key.json' // Clean up the key file
+            // Clean up the key file
+            sh 'rm -f ${GOOGLE_APPLICATION_CREDENTIALS}'
             slackSend channel: 'kp-devops', message: "Pipeline status: ${currentBuild.currentResult}"
         }
     }
 }
+
