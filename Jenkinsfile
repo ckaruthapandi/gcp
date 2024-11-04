@@ -23,23 +23,12 @@ pipeline {
                 }
            }
       }
-     stage('Push to GCR') {
+     stage('Build and Push to GCR') {
             steps {
                 sh 'docker build -t gcr.io/red-context-436605-p8/nodejs:${env.BUILD_NUMBER} .'
                 sh 'docker push gcr.io/red-context-436605-p8/nodejs:latest'
             }
         }
-    stage('helm repo check out ') {
-      steps {
-        git branch: 'main', url: 'https://github.com/ckaruthapandi/ap_helm_node_js.git'
-      }
-    }
-     stage('deploy to helm ') {
-      steps {
-            sh 'kubectl apply -f my-namespace.yaml'
-            sh 'helm upgrade --install nodejsdev nodejsapp --values nodejsapp/values.yaml -n dev --set image.tag="$BUILD_NUMBER"'
-            sh 'cat nodejsapp/values.yaml'
-           }
     }
   }
   post 
