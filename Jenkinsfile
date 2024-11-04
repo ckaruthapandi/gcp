@@ -21,9 +21,9 @@ pipeline {
     stage('Pushing to ECR') {
      steps{  
          script {
-                sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 581962848636.dkr.ecr.us-east-1.amazonaws.com'
-                sh 'docker tag aatmaaniproject:latest 581962848636.dkr.ecr.us-east-1.amazonaws.com/aatmaaniproject:${GIT_COMMIT}'
-                sh 'docker push 581962848636.dkr.ecr.us-east-1.amazonaws.com/aatmaaniproject:${GIT_COMMIT}'
+                sh 'docker build -t gcr.io/red-context-436605-p8/aatmaaniproject:latest .'
+                sh 'gcloud auth configure-docker'
+                sh 'docker push gcr.io/red-context-436605-p8/aatmaaniproject:latest'
                 }
            }
       }
