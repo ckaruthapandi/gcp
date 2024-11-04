@@ -21,8 +21,7 @@ pipeline {
     stage('Pushing to ECR') {
      steps{  
          script {
-                sh 'docker build -t gcr.io/red-context-436605-p8/aatmaaniproject:latest .'
-                sh 'gcloud auth configure-docker'
+                sh 'gcloud auth configure-docker us-central1-docker.pkg.dev'
                 sh 'docker push gcr.io/red-context-436605-p8/aatmaaniproject:latest'
                 }
            }
