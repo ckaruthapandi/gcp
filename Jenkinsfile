@@ -1,5 +1,8 @@
 pipeline {
     agent any
+environment {
+        GOOGLE_APPLICATION_CREDENTIALS = 'red-context-436605-p8-bfde6b0a21c8.json' // Path to your service account key
+    }
 
     stages {
         stage('Node.js Check Out') {
@@ -29,30 +32,20 @@ pipeline {
             }
         }
         
-        stage('Connect to GCR') {
+    stage('Authenticate with Google Cloud') {
             steps {
                 script {
-                    // Retrieve the service account key and write it to a file
-                    def gcloudServiceAccountKey = credentials('ecbae9ea-2041-4956-a579-74d26beb92c2')
-                    writeFile file: 'gcloud-key.json', text: gcloudServiceAccountKey
-                    sh 'gcloud auth activate-service-account --key-file=gcloud-key.json'
+                    // Load Google Cloud credentials from Jenkins credentials store
+                    def gcloudServiceAccountKey = credentials('d182c445-296a-4a3c-a6b8-c9f5ccf7ee3f') // Replace with your Jenkins credential ID
+                    writeFile file: GOOGLE_APPLICATION_CREDENTIALS, text: gcloudServiceAccountKey
+
+                    // Authenticate with Google Cloud
+                    sh 'gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}'
                     sh 'gcloud auth configure-docker'
+                    sh 'gcloud config set project red-context-436605-p8'
                 }
             }
         }
-        
-        stage('Build and Push to GCR') {
-            steps {
-                script {
-                    def imageTag = "gcr.io/red-context-436605-p8/nodejs:${env.BUILD_NUMBER}"
-                    sh "docker build -t ${imageTag} ."
-                    sh "docker push ${imageTag}"
-                    sh 'docker push gcr.io/red-context-436605-p8/nodejs:latest' // Pushing the "latest" tag
-                }
-            }
-        }
-    }
-    
     post {
         always {
             sh 'rm -f gcloud-key.json' // Clean up the key file
@@ -60,4 +53,3 @@ pipeline {
         }
     }
 }
-
