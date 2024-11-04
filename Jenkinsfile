@@ -15,14 +15,14 @@ pipeline {
 }
     stage('Docker image build ') {
       steps {
-        sh 'docker build -t gcr.io/red-context-436605-p8/aatmaaniproject:latest .'
+        sh 'docker build -t gcr.io/red-context-436605-p8/nodejs:latest .'
       }
     }
-    stage('Pushing to ECR') {
+    stage('Pushing to GCR') {
      steps{  
          script {
                 sh 'gcloud auth configure-docker us-central1-docker.pkg.dev'
-                sh 'docker push gcr.io/red-context-436605-p8/aatmaaniproject:latest'
+                sh 'docker push gcr.io/red-context-436605-p8/nodejs:latest'
                 }
            }
       }
