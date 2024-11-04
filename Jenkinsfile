@@ -15,7 +15,7 @@ pipeline {
 }
     stage('Docker image build ') {
       steps {
-        sh 'docker build -t aatmaaniproject .'
+        sh 'docker build -t gcr.io/red-context-436605-p8/aatmaaniproject:latest .'
       }
     }
     stage('Pushing to ECR') {
