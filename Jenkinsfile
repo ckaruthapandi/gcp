@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        IMG_NAME = 'modejs
+        IMG_NAME = 'nodejs'
         DOCKER_REPO = 'karuthapandi/gcp'
     }
     stages {
