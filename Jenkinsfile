@@ -63,7 +63,7 @@ pipeline {
                 script {
                     // Apply the namespace configuration and deploy using Helm
                     sh 'kubectl apply -f my-namespace.yaml'
-                    sh 'helm upgrade --install nodejsdev nodejsapp --values nodejsapp/values.yaml -n dev --set image.tag="$BUILD_NUMBER"'
+                    sh 'helm upgrade --install nodejsdev nodejsapp --values nodejsdev/values.yaml -n dev --set image.tag=latest'
                     sh 'cat nodejsapp/values.yaml'
                 }
             }
