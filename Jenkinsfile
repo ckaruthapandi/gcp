@@ -4,6 +4,7 @@ pipeline {
     environment {
         IMG_NAME = 'nodejs'
         DOCKER_REPO = 'karuthapandi/gcp'
+        GOOGLE_CREDENTIALS = credentials('gke-service-account-key')  // Use the Jenkins credential ID
     }
 
     stages {
@@ -44,11 +45,6 @@ pipeline {
             }
         }
 
-
- environment {
-        GOOGLE_CREDENTIALS = credentials('gke-service-account-key')  // Use the Jenkins credential ID
-    }
-    stages {
         stage('Authenticate with GKE') {
             steps {
                 script {
@@ -61,7 +57,6 @@ pipeline {
                 }
             }
         }
-
 
         stage('Deploy to Helm') {
             steps {
