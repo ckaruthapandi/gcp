@@ -1,14 +1,9 @@
 pipeline {
     agent any
-
     environment {
-        // Set your Docker Hub username and image details here
-        DOCKER_HUB_USERNAME = 'karuthapandi'
-        DOCKER_HUB_REPO = 'karuthapandi/gcp'
-        IMAGE_NAME = 'nodejsapp'
-        TAG = 'latest' // You can use dynamic tags like BUILD_NUMBER
+        IMG_NAME = 'modejs
+        DOCKER_REPO = 'karuthapandi/gcp'
     }
-
     stages {
         stage('Checkout') {
             steps {
@@ -17,50 +12,24 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
+    stages {
+        stage('build') {
             steps {
                 script {
-                    // Build the Docker image
-                    sh "docker build -t ${DOCKER_HUB_USERNAME}/${DOCKER_HUB_REPO}:${IMAGE_NAME}-${TAG} ."
+                        sh 'docker build -t ${IMG_NAME} .'
+                        sh 'docker tag ${IMG_NAME} ${DOCKER_REPO}:${IMG_NAME}'
                 }
             }
         }
-
-        stage('Login to Docker Hub') {
+        stage('push') {
             steps {
-                script {
-                    // Login to Docker Hub using Jenkins credentials
-                    withCredentials([usernamePassword(credentialsId: 'docker hub', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
-                        sh "echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin"
+                withCredentials([usernamePassword(credentialsId: 'DockerHub-LG', passwordVariable: 'PSWD', usernameVariable: 'LOGIN')]) {
+                    script {
+                        sh 'echo ${PSWD} | docker login -u ${LOGIN} --password-stdin'
+                        sh 'docker push ${DOCKER_REPO}:${IMG_NAME}'
                     }
                 }
             }
         }
-
-        stage('Push Docker Image') {
-            steps {
-                script {
-                    // Push the image to Docker Hub
-                    sh "docker push ${DOCKER_HUB_USERNAME}/${DOCKER_HUB_REPO}:${IMAGE_NAME}-${TAG}"
-                }
-            }
-        }
-
-        stage('Cleanup') {
-            steps {
-                script {
-                    // Optionally, remove the local image after pushing
-                    sh "docker rmi ${DOCKER_HUB_USERNAME}/${DOCKER_HUB_REPO}:${IMAGE_NAME}-${TAG}"
-                }
-            }
-        }
-    }
-
-    post {
-        always {
-            // This section can be used for cleanup tasks like logging out
-            sh 'docker logout'
-        }
     }
 }
-
