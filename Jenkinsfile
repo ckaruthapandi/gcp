@@ -44,6 +44,25 @@ pipeline {
             }
         }
 
+
+ environment {
+        GOOGLE_CREDENTIALS = credentials('gke-service-account-key')  // Use the Jenkins credential ID
+    }
+    stages {
+        stage('Authenticate with GKE') {
+            steps {
+                script {
+                    // Authenticate with Google Cloud using the service account
+                    withCredentials([file(credentialsId: 'gke-service-account-key', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
+                        sh 'gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}'
+                        sh 'gcloud config set project red-context-436605-p8'
+                        sh 'gcloud container clusters get-credentials autopilot-cluster-2 --region us-central1 --project red-context-436605-p8'
+                    }
+                }
+            }
+        }
+
+
         stage('Deploy to Helm') {
             steps {
                 script {
