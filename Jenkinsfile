@@ -10,7 +10,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Checkout the code from your Git repository
-                git 'https://github.com/ckaruthapandi/gcp.git'
+                git branch: 'main', url: 'https://github.com/ckaruthapandi/gcp.git'
             }
         }
 
