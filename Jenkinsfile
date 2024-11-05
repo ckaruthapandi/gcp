@@ -41,7 +41,7 @@ pipeline {
         stage('Checkout for Helm Deployment') {
             steps {
                 // Checkout the code from your Git repository for Helm deployment
-                git branch: 'main', url: 'https://github.com/ckaruthapandi/ap_helm_node_js.git'
+                git branch: 'main', url: 'https://github.com/ckaruthapandi/gcphelm.git'
             }
         }
 
