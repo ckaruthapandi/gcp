@@ -36,7 +36,11 @@ pipeline {
                 }
             }
         }
-
+      stage('helm repo check out ') {
+      steps {
+        git branch: 'main', url: 'https://github.com/ckaruthapandi/ap_helm_node_js.git'
+      }
+    }
       stage('deploy to helm ') {
       steps {
             sh 'kubectl apply -f my-namespace.yaml'
