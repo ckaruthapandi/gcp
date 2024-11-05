@@ -11,7 +11,7 @@ pipeline {
                 git 'https://github.com/ckaruthapandi/gcp.git'
             }
         }
-
+    }
     stages {
         stage('build') {
             steps {
@@ -33,3 +33,4 @@ pipeline {
         }
     }
 }
+
